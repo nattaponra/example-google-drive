@@ -33,6 +33,7 @@ function getClient()
     if ($client->isAccessTokenExpired()) {
       
         //ถ้าหมดให้ลอง Refresh  ใหม่ดู
+        echo $client->getRefreshToken();
         if ($client->getRefreshToken()) {
             $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
         } else { 
@@ -55,6 +56,7 @@ function getClient()
         if (!file_exists(dirname($tokenPath))) {
             mkdir(dirname($tokenPath), 0700, true);
         }
+      
         file_put_contents($tokenPath, json_encode($client->getAccessToken()));
     }
     return $client;
@@ -63,7 +65,7 @@ function getClient()
 
 // สร้าง client object เพื่อเอาไปใช้งาน กับ Service ของ Google ได้หลายๆตัว
 $client = getClient();
-
+print_r($client->getAccessToken());
 //แต่เราจะใช้ใน Service ของ Google Drive
 $service = new Google_Service_Drive($client);
 
